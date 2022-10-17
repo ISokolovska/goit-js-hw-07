@@ -1,22 +1,37 @@
 import { galleryItems } from "./gallery-items.js";
 // Change code below this line
-const gallery = document.querySelector(".gallery");
-
-const markupList = document.createElement("ul");
-gallery.appendChild(markupList);
+const markupList = document.querySelector(".gallery");
 
 const markupItems = galleryItems
   .map(
     ({ preview, original, description }) =>
-      `<li><img src="${preview}" src="${original}" alt="${description} width="200px" height="200px"></li>`
+      `<div class="gallery__item">
+      <a class="gallery__link" href="${original}">
+      <img
+      class="gallery__image"
+      src="${preview}"
+      data-source="${original}"
+      alt="${description}"
+      />
+    </a>
+    </div>`
   )
   .join("");
 
 markupList.insertAdjacentHTML("beforeend", markupItems);
-
-markupList.style.display = "flex";
-markupList.style.flexWrap = "wrap";
-markupList.style.listStyle = "none";
-markupList.style.gap = "10px 10px";
-
 console.log(galleryItems);
+
+markupList.addEventListener("click", onMarkupListClick);
+
+function onMarkupListClick(evt) {
+  evt.preventDefault();
+  if (!evt.target.classList.contains("gallery__image")) {
+    return;
+  }
+
+  const galleryImage = evt.target;
+  const galleryItem = galleryImage.closest(".gallery__item");
+  galleryItem.classList.add("is-active");
+
+  console.log(galleryItem);
+}
