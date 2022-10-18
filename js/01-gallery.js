@@ -19,14 +19,12 @@ const markupItems = galleryItems
   .join("");
 
 markupList.insertAdjacentHTML("beforeend", markupItems);
-console.log(galleryItems);
 
 markupList.addEventListener("click", onMarkupListClick);
 
 function onMarkupListClick(evt) {
-  // заборона перенаправлення на іншу сторінку
   evt.preventDefault();
-  // якщо не картинка, то повернення
+
   if (!evt.target.classList.contains("gallery__image")) {
     return;
   }
@@ -34,17 +32,16 @@ function onMarkupListClick(evt) {
   const galleryImage = evt.target;
   const galleryItem = galleryImage.closest(".gallery__item");
 
-  // в іншому випадку використання basicLightbox
   const instance = basicLightbox.create(`
       <img src="${evt.target.dataset.source}" width="800" height="600">
   `);
   instance.show();
 
   markupList.addEventListener("keydown", (evt) => {
-  if (evt.code === "Escape") {
-    instance.close();
-  }
-});
+    if (evt.code === "Escape") {
+      instance.close();
+    }
+  });
 
   removeActiveClassGalleryItem();
   addActiveClassGalleryItem(galleryItem);
@@ -63,3 +60,4 @@ function addActiveClassGalleryItem(img) {
   img.classList.add("is-active");
 }
 
+console.log(galleryItems);
