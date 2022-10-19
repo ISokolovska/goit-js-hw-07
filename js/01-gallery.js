@@ -32,16 +32,26 @@ function onMarkupListClick(evt) {
   const galleryImage = evt.target;
   const galleryItem = galleryImage.closest(".gallery__item");
 
-  const instance = basicLightbox.create(`
-      <img src="${evt.target.dataset.source}" width="800" height="600">
-  `);
-  instance.show();
-
-  markupList.addEventListener("keydown", (evt) => {
-    if (evt.code === "Escape") {
-      instance.close();
+  const instance = basicLightbox.create(
+    `<img src="${evt.target.dataset.source}" width="800" height="600">`,
+    {
+      onShow: (instance) => {
+        markupList.addEventListener("keydown", (evt) => {
+          if (evt.code === "Escape") {
+            instance.close();
+          }
+        });
+      },
+      onClose: (instance) => {
+        markupList.removeEventListener("keydown", (evt) => {
+          if (evt.code === "Escape") {
+            instance.close();
+          }
+        });
+      },
     }
-  });
+  );
+  instance.show();
 
   removeActiveClassGalleryItem();
   addActiveClassGalleryItem(galleryItem);
